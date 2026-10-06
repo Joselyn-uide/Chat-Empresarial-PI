@@ -33,3 +33,6 @@ El proyecto abarca el diseño e implementación de un sistema que combina softwa
 * No incluye aplicaciones móviles nativas ni pasarelas de mensajería pública externa.
 
 ---
+
+## Video
+Video grupa: https://drive.google.com/file/d/1BgLwMJoLMNJwATurPaoKMaBrOg6PJpEg/view?usp=drivesdk
