@@ -16,11 +16,11 @@ Se desarrolló una aplicación de chat corporativo en arquitectura cliente-servi
 ## Objetivos del Proyecto
 * **Objetivo General:** Desarrollar una aplicación de chat corporativo en arquitectura cliente/servidor, en el lenguaje Go, que permita la interacción concurrente y segura entre usuarios de dos unidades organizativas distintas, con verificación de identidad y sobre una infraestructura de red segmentada.
 * **Objetivos Específicos:** 
-  1. Implementar funciones de mensajería bidireccional y gestión del historial básico.
-  2. Integrar el servicio de autenticación con FastAPI.
-  3. Controlar el acceso mediante hashing seguro.
-  4. Organizar el código bajo principios de Programación Orientada a Objetos (POO).
-  5. Validar la conectividad mediante una red segmentada por VLANs y enrutamiento OSPF.
+  1.- Implementar funciones de mensajería bidireccional y gestión del historial básico.
+  2.- Integrar el servicio de autenticación con FastAPI.
+  3.- Controlar el acceso mediante hashing seguro.
+  4.- Organizar el código bajo principios de Programación Orientada a Objetos (POO).
+  5.-  Validar la conectividad mediante una red segmentada por VLANs y enrutamiento OSPF.
 
 ## Alcance del Proyecto
 El proyecto abarca el diseño e implementación de un sistema que combina software y redes:
