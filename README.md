@@ -35,4 +35,4 @@ El proyecto abarca el diseño e implementación de un sistema que combina softwa
 ---
 
 ## Video
-Video grupa: https://drive.google.com/file/d/1BgLwMJoLMNJwATurPaoKMaBrOg6PJpEg/view?usp=drivesdk
+Video grupal: https://drive.google.com/file/d/1BgLwMJoLMNJwATurPaoKMaBrOg6PJpEg/view?usp=drivesdk
