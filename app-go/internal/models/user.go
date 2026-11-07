@@ -4,32 +4,31 @@ import (
 	"errors"
 )
 
-// User representa la entidad principal del colaborador (POO)
-type User struct {
-	Username string
-	Role     string
+type Usuario struct {
+	NombreUsuario string
+	Rol           string
 }
 
-// NewUser es un constructor para crear un usuario con estado válido
-func NewUser(username, role string) (*User, error) {
-	if username == "" {
+// NewUsuario es un constructor para crear un usuario con estado válido
+func NewUsuario(nombreUsuario, rol string) (*Usuario, error) {
+	if nombreUsuario == "" {
 		return nil, errors.New("El nombre de usuario no puede estar vacío")
 	}
-	if role == "" {
-		role = "Empleado" // Rol por defecto
+	if rol == "" {
+		rol = "Empleado" // Rol por defecto
 	}
-	return &User{
-		Username: username,
-		Role:     role,
+	return &Usuario{
+		NombreUsuario: nombreUsuario,
+		Rol: rol,
 	}, nil
 }
 
-// GetUsername es un método asociado a la estructura con receptor para obtener el nombre 
-func (u *User) GetUsername() string {
-	return u.Username
+// GetNombreUsuario es un método asociado a la estructura con receptor para obtener el nombre 
+func (u *Usuario) GetNombreUsuario() string {
+	return u.NombreUsuario
 }
 
-// GetRole permite consultar el rol del usuario 
-func (u *User) GetRole() string {
-	return u.Role
+// GetRol permite consultar el rol del usuario 
+func (u *Usuario) GetRol() string {
+	return u.Rol
 }
