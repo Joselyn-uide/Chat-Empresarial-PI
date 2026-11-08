@@ -48,7 +48,7 @@ func manejarCliente(conexion net.Conn) {
 	conexion.Write([]byte("¡Conectado exitosamente al Servidor de Chat Empresarial!\n"))
 
 	// Lector para recibir los mensajes que envía el cliente por el socket TCP
-	lector := bufio.NewReader(conn)
+	lector := bufio.NewReader(conexion)
 
 	for {
     //Lee lo que escribe el cliente linea por linea
@@ -61,7 +61,7 @@ func manejarCliente(conexion net.Conn) {
 		mensajeLimpio := strings.TrimSpace(mensaje)
 		if mensajeLimpio == "SALIR" {
 			fmt.Println("El cliente", direccionCliente, "solicitó salir del chat.")
-			conn.Write([]byte("Conexión cerrada. ¡Hasta luego!\n"))
+			conexion.Write([]byte("Conexión cerrada. ¡Hasta luego!\n"))
 			break
 		}
 
