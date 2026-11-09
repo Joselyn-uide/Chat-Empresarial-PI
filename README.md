@@ -49,6 +49,7 @@ Video grupal: https://drive.google.com/file/d/1BgLwMJoLMNJwATurPaoKMaBrOg6PJpEg/
 No se necesitan librerías externas: el proyecto usa solo la librería estándar de Go.
 
 ## Estructura del código (`app-go/`)
+~~~
 app-go/
 ├── go.mod → Módulo chat-empresarial
 ├── cmd/
@@ -60,6 +61,7 @@ app-go/
 │ ├── services/ → Validaciones de entrada (mensaje, usuario, IP y puerto)
 │ └── storage/ → Historial de la sesión en memoria y exportación a JSON
 └── data/ → Historiales exportados en JSON (no se suben al repositorio)
+~~~
 
 
 ## Cómo ejecutar el proyecto paso a paso
