@@ -11,8 +11,12 @@ import (
 
 	"chat-empresarial/internal/handlers"
 	"chat-empresarial/internal/models"
+	"chat-empresarial/internal/services"
 	"chat-empresarial/internal/storage"
 )
+
+// MaxIntentos es la cantidad de veces que dejamos reintentar un dato inválido.
+const MaxIntentos = 3
 
 // En main solo decidimos cómo termina el programa.
 // Toda la lógica la pusimos en ejecutar(), que devuelve un error en vez de usar panic.
@@ -31,12 +35,23 @@ func ejecutar() error {
 	fmt.Println("     Cliente de Chat Empresarial")
 	fmt.Println("========================================")
 
-	// Pedimos la IP y el puerto; si el usuario solo presiona Enter usamos 127.0.0.1:8080
-	ip := leer(teclado, "IP del servidor [127.0.0.1]: ", "127.0.0.1")
-	puerto := leer(teclado, "Puerto [8080]: ", "8080")
+	// Pedimos la IP, el puerto y el usuario, y los validamos antes de conectarnos.
+	// Si el usuario solo presiona Enter usamos 127.0.0.1:8080
+	ip, err := pedirValido(teclado, "IP del servidor [127.0.0.1]: ", "127.0.0.1", services.ValidarIP)
+	if err != nil {
+		return err
+	}
+	puerto, err := pedirValido(teclado, "Puerto [8080]: ", "8080", services.ValidarPuerto)
+	if err != nil {
+		return err
+	}
+	nombre, err := pedirValido(teclado, "Nombre de usuario: ", "", services.ValidarUsuario)
+	if err != nil {
+		return err
+	}
 
-	// Creamos el usuario con el constructor del modelo, que valida que el nombre no esté vacío
-	usuario, err := models.NewUsuario(leer(teclado, "Nombre de usuario: ", ""), "")
+	// Creamos el usuario con el constructor del modelo
+	usuario, err := models.NewUsuario(nombre, "")
 	if err != nil {
 		return err
 	}
@@ -74,7 +89,7 @@ func ejecutar() error {
 		mostrarMenu()
 		switch leer(teclado, "> ", "") {
 		case "1":
-			// Enviar mensaje: si está vacío mostramos el error y el programa sigue
+			// Enviar mensaje: si no pasa las validaciones mostramos el motivo y el programa sigue
 			if err := cliente.EnviarMensaje(leer(teclado, "Mensaje: ", "")); err != nil {
 				fmt.Println("No se envió:", err)
 			}
@@ -125,6 +140,19 @@ func mostrarHistorial(h *storage.Historial) {
 	for _, m := range mensajes {
 		fmt.Printf("[%s] %s: %s\n", m.GetFechaHora().Format("15:04:05"), m.GetRemitente(), m.GetContenido())
 	}
+}
+
+// pedirValido lee un dato y lo pasa por la función de validación.
+// Si es inválido mostramos el motivo y lo volvemos a pedir, hasta MaxIntentos veces.
+func pedirValido(teclado *bufio.Reader, etiqueta, porDefecto string, validar func(string) (string, error)) (string, error) {
+	for intento := 1; intento <= MaxIntentos; intento++ {
+		valor, err := validar(leer(teclado, etiqueta, porDefecto))
+		if err == nil {
+			return valor, nil
+		}
+		fmt.Printf("Dato inválido: %v (intento %d de %d)\n", err, intento, MaxIntentos)
+	}
+	return "", fmt.Errorf("se superó el número máximo de intentos (%d)", MaxIntentos)
 }
 
 // leer muestra un texto, lee una línea del teclado y, si viene vacía,

@@ -15,6 +15,7 @@ import (
 	"time"
 
 	"chat-empresarial/internal/models"
+	"chat-empresarial/internal/services"
 	"chat-empresarial/internal/storage"
 )
 
@@ -76,12 +77,15 @@ func (c *ClienteChat) EnviarMensaje(texto string) error {
 		return ErrNoConectado
 	}
 
-	// Si el mensaje está vacío, NewMensaje nos devuelve el error y no se envía nada
-	mensaje, err := models.NewMensaje(c.usuario.GetNombreUsuario(), texto)
+	// Primero validamos el texto (vacío, solo espacios, muy largo o con caracteres
+	// no permitidos). Si algo está mal, devolvemos el error y no se envía nada
+	texto, err := services.ValidarMensaje(texto)
 	if err != nil {
 		return err
 	}
 
+	mensaje, err := models.NewMensaje(c.usuario.GetNombreUsuario(), texto)
+	
 	// Enviamos el mensaje como una línea de texto, que es lo que entiende el servidor
 	linea := fmt.Sprintf("[%s] %s\n", mensaje.GetRemitente(), mensaje.GetContenido())
 	if _, err := c.conexion.Write([]byte(linea)); err != nil {

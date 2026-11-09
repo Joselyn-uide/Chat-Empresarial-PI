@@ -36,3 +36,78 @@ El proyecto abarca el diseño e implementación de un sistema que combina softwa
 
 ## Video
 Video grupal: https://drive.google.com/file/d/1BgLwMJoLMNJwATurPaoKMaBrOg6PJpEg/view?usp=drivesdk
+
+---
+
+## Requisitos de software
+| Herramienta | Versión | Uso |
+|---|---|---|
+| Go | 1.21 o superior (probado con VERSION_AQUI) | Compilar y ejecutar el servidor y el cliente |
+| Git | Cualquier versión reciente | Clonar el repositorio |
+| Terminal | Bash, PowerShell o la terminal de GitHub Codespaces | Ejecutar los comandos |
+
+No se necesitan librerías externas: el proyecto usa solo la librería estándar de Go.
+
+## Estructura del código (`app-go/`)
+app-go/
+├── go.mod → Módulo chat-empresarial
+├── cmd/
+│ ├── server/main.go → Servidor TCP (una goroutine por cliente y reenvío a todos)
+│ └── client/main.go → Cliente de consola con menú interactivo
+├── internal/
+│ ├── models/ → Estructuras Usuario y Mensaje
+│ ├── handlers/cliente.go → Lógica de conexión del cliente (ClienteChat)
+│ ├── services/ → Validaciones de entrada (mensaje, usuario, IP y puerto)
+│ └── storage/ → Historial de la sesión en memoria y exportación a JSON
+└── data/ → Historiales exportados en JSON (no se suben al repositorio)
+
+
+## Cómo ejecutar el proyecto paso a paso
+1. Clonar el repositorio y entrar a la carpeta del código:
+   ```bash
+   git clone https://github.com/Joselyn-uide/Chat-Empresarial-PI.git
+   cd Chat-Empresarial-PI/app-go
+   ```
+2. Comprobar que Go está instalado:
+   ```bash
+   go version
+   ```
+3. **Terminal 1, iniciar el servidor:**
+   ```bash
+   go run ./cmd/server
+   ```
+   Debe mostrar `Esperando conexiones en el puerto :8080`.
+4. **Terminal 2 (y 3 para un segundo usuario), iniciar el cliente:**
+   ```bash
+   go run ./cmd/client
+   ```
+   Presionar Enter para usar la IP `127.0.0.1` y el puerto `8080` por defecto, y escribir un nombre de usuario.
+5. Usar el menú del cliente:
+   - `1` Enviar mensaje
+   - `2` Ver el historial de la sesión
+   - `3` Guardar el historial en JSON (carpeta `data/`)
+   - `4` Salir (envía el comando `SALIR`)
+
+Para generar ejecutables en lugar de usar `go run`:
+```bash
+go build -o servidor ./cmd/server
+go build -o cliente ./cmd/client
+```
+
+## Pruebas
+```bash
+go vet ./...      # análisis estático del código
+go test ./...     # pruebas unitarias de validaciones e historial
+```
+
+## Declaración de uso de Inteligencia Artificial
+En el desarrollo de este proyecto utilizamos las siguientes herramientas de Inteligencia Artificial como apoyo:
+**Claude (Anthropic)** 
+**ChatGPT (OpenAI)**
+**ChatGPT (OpenAI)** 
+||como herramienta de apoyo para:
+
+- Orientación paso a paso en la estructura modular del código en Go, el manejo de errores y la concurrencia.
+- Sugerencias de código para el cliente, el historial, las validaciones y el reenvío de mensajes del servidor, que revisamos, probamos y adaptamos al proyecto.
+
+Todo el código fue revisado, ejecutado y validado por los integrantes del equipo, quienes entienden y pueden explicar su funcionamiento.
