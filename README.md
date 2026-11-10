@@ -35,8 +35,8 @@ El proyecto abarca el diseño e implementación de un sistema que combina softwa
 ---
 
 ## Video
-Video grupal: https://drive.google.com/file/d/1BgLwMJoLMNJwATurPaoKMaBrOg6PJpEg/view?usp=drivesdk
-
+Avance 1: https://drive.google.com/file/d/1BgLwMJoLMNJwATurPaoKMaBrOg6PJpEg/view?usp=drivesdk
+Avance 2: https://youtube.com/watch?v=4O63v6W47ZY&feature=shared
 ---
 
 ## Requisitos de software
@@ -106,7 +106,7 @@ go test ./...     # pruebas unitarias de validaciones e historial
 En el desarrollo de este proyecto utilizamos las siguientes herramientas de Inteligencia Artificial como apoyo:
 **Claude (Anthropic)** 
 **ChatGPT (OpenAI)**
-**ChatGPT (OpenAI)** 
+**Gemini (Google)** 
 ||como herramienta de apoyo para:
 
 - Orientación paso a paso en la estructura modular del código en Go, el manejo de errores y la concurrencia.
