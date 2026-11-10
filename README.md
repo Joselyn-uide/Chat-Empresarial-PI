@@ -113,3 +113,34 @@ En el desarrollo de este proyecto utilizamos las siguientes herramientas de Inte
 - Sugerencias de código para el cliente, el historial, las validaciones y el reenvío de mensajes del servidor, que revisamos, probamos y adaptamos al proyecto.
 
 Todo el código fue revisado, ejecutado y validado por los integrantes del equipo, quienes entienden y pueden explicar su funcionamiento.
+
+
+## Funcionalidades implementadas
+
+- Comunicación cliente-servidor mediante protocolo TCP.
+- Conexión simultánea de múltiples usuarios.
+- Envío y recepción de mensajes en tiempo real.
+- Identificación de usuarios mediante nombres.
+- Visualización del historial de mensajes de la sesión.
+- Exportación del historial de conversaciones en formato JSON.
+- Validación de usuarios, mensajes, direcciones IP y puertos.
+- Servicio de autenticación mediante FastAPI.
+
+## Versión de Go utilizada
+go version go1.27.3 linux/amd64
+
+## Limitaciones conocidas
+
+- El sistema está diseñado para ejecutarse en un entorno local o en una red privada.
+- La comunicación está limitada al intercambio de mensajes de texto.
+- El historial de conversación se mantiene en memoria durante la sesión.
+- No cuenta con persistencia automática de conversaciones entre ejecuciones.
+- La disponibilidad del chat depende de que el servidor se encuentre activo.
+
+## Autores y contribuciones
+
+Joselyn Paulet Laguna Puetate: Participación en el diseño, desarrollo e implementación del sistema de chat empresarial, así como en la documentación y pruebas del proyecto.
+
+Jose Emiliano Velasco Sosa: Participación en la programación del servidor y cliente en Go, implementación de funcionalidades de comunicación y validación del funcionamiento del sistema.
+
+Darwin Oswaldo Román Aguirre: Participación en la configuración de la infraestructura de red, integración de componentes del sistema, documentación y pruebas de conectividad.
