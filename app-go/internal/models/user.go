@@ -6,8 +6,8 @@ import (
 )
 
 type Usuario struct {
-	NombreUsuario string
-	Rol           string
+	nombreUsuario string
+	rol           string
 }
 
 // NewUsuario es un constructor para crear un usuario con estado válido
