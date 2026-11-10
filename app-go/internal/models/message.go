@@ -8,9 +8,9 @@ import (
 
 // Mensaje representa la estructura de un mensaje enviado en el chat
 type Mensaje struct {
-	Remitente string
-	Contenido string
-	FechaHora time.Time
+	remitente string
+	contenido string
+	fechaHora time.Time
 }
 
 // NewMensaje es la función constructora para crear y validar un mensaje de texto
@@ -26,23 +26,23 @@ func NewMensaje(remitente, contenido string) (*Mensaje, error) {
 	}
 
 	return &Mensaje{
-		Remitente: remitente,
-		Contenido: contenido,
-		FechaHora: time.Now(),
+		remitente: remitente,
+		contenido: contenido,
+		fechaHora: time.Now(),
 	}, nil
 }
 
 // GetRemitente retorna el remitente del mensaje
 func (m *Mensaje) GetRemitente() string {
-	return m.Remitente
+	return m.remitente
 }
 
 // GetContenido retorna el contenido del mensaje
 func (m *Mensaje) GetContenido() string {
-	return m.Contenido
+	return m.contenido
 }
 
 // GetFechaHora retorna la fecha y hora en que se envió el mensaje
 func (m *Mensaje) GetFechaHora() time.Time {
-	return m.FechaHora
+	return m.fechaHora
 }
