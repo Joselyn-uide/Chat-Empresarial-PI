@@ -20,17 +20,17 @@ func NewUsuario(nombreUsuario, rol string) (*Usuario, error) {
 		rol = "Empleado" // Rol por defecto
 	}
 	return &Usuario{
-		NombreUsuario: nombreUsuario,
-		Rol: rol,
+		nombreUsuario: nombreUsuario,
+		rol: rol,
 	}, nil
 }
 
 // GetNombreUsuario es un método asociado a la estructura con receptor para obtener el nombre 
 func (u *Usuario) GetNombreUsuario() string {
-	return u.NombreUsuario
+	return u.nombreUsuario
 }
 
 // GetRol permite consultar el rol del usuario 
 func (u *Usuario) GetRol() string {
-	return u.Rol
+	return u.rol
 }
