@@ -144,3 +144,20 @@ Joselyn Paulet Laguna Puetate: Participación en el diseño, desarrollo e implem
 Jose Emiliano Velasco Sosa: Participación en la programación del servidor y cliente en Go, implementación de funcionalidades de comunicación y validación del funcionamiento del sistema.
 
 Darwin Oswaldo Román Aguirre: Participación en la configuración de la infraestructura de red, integración de componentes del sistema, documentación y pruebas de conectividad.
+
+## Dirección IP, puerto y parámetros configurables
+
+El sistema permite configurar la dirección IP y el puerto del servidor desde el cliente antes de establecer la conexión.
+
+| Parámetro | Valor predeterminado | Descripción |
+|---|---|---|
+| Dirección IP | 127.0.0.1 | Dirección local del servidor (localhost). |
+| Puerto | 8080 | Puerto utilizado para la comunicación mediante sockets TCP. |
+| Protocolo | TCP | Protocolo de comunicación entre cliente y servidor. |
+| Tiempo de espera | 5 segundos | Tiempo máximo de espera para establecer la conexión. |
+
+**Validaciones de configuración:**
+- La dirección IP debe tener un formato válido o corresponder a localhost.
+- El puerto debe ser un número comprendido entre 1 y 65535.
+- Si el usuario presiona Enter, se utilizan los valores predeterminados: 127.0.0.1 y 8080.
+- El nombre de usuario debe tener entre 3 y 20 caracteres.
