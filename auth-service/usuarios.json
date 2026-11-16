@@ -8,5 +8,10 @@
         "username": "jose_prueba",
         "password_hash": "$2b$12$80XjAsLYkaazYdq55WAHl.WHS6SaQHSQ33bYpPuM6vDC/2cKZqYVO",
         "rol": "Empleado"
+    },
+    "jose_ad": {
+        "username": "jose_ad",
+        "password_hash": "$2b$12$mbJg0arEZh7aO69HYkTHAuEiBy53gZz..hxY0WRBYpRPDKSStiiwK",
+        "rol": "Administrador"
     }
 }
