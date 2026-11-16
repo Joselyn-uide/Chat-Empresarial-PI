@@ -3,5 +3,10 @@
         "username": "j.cardenas",
         "password_hash": "$2b$12$nZ9/RI0qkU0WeUBJdTlF3uj3t997pz.Av7cALd0iVhZD1vst2IWGO",
         "rol": "Empleado"
+    },
+    "jose_prueba": {
+        "username": "jose_prueba",
+        "password_hash": "$2b$12$80XjAsLYkaazYdq55WAHl.WHS6SaQHSQ33bYpPuM6vDC/2cKZqYVO",
+        "rol": "Empleado"
     }
 }
