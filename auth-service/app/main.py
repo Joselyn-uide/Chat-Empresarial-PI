@@ -100,7 +100,8 @@ def registrar_usuario(datos: UsuarioRegistro):
 
 # 2. Endpoint de Inicio de Sesión (Login)
 @app.post("/login")
-def iniciar_sesion(datos: UsuarioLogin):
+@limiter.limit("5/minute")
+def iniciar_sesion(request:Request, datos: UsuarioLogin):
     usuarios = cargar_usuarios()
     usuario = usuarios.get(datos.username.strip())
 
