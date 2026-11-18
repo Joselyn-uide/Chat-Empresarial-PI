@@ -2,11 +2,21 @@ import json
 import os
 import secrets
 import bcrypt
-from fastapi import FastAPI, HTTPException, Depends
+from fastapi import FastAPI, HTTPException, Depends, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
+
+# Inicialización del limitador de tasa basado en la dirección IP del cliente
+limiter = Limiter(key_func=get_remote_address)
 
 app = FastAPI(title="Microservicio de Autenticación y Control de Acceso (RBAC) - Chat Empresarial")
+
+# Asociar el manejador de excepciones de Rate Limiting (HTTP 429)
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 DB_FILE = "usuarios.json"
 ROLES_VALIDOS ={"Empleado", "Administrador"}
@@ -132,4 +142,4 @@ def gestionar_cuentas_administrativas(sesion: dict = Depends(requerir_roles({"Ad
         "usuario": sesion["username"],
         "rol": sesion["rol"],
         "mensaje": "Acción administrativa ejecutada con éxito (Gestión de cuentas/auditoría)"
-    }
+    } 
