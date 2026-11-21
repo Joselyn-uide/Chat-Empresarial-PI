@@ -1,5 +1,5 @@
 """
-Pruebas de seguridad PS-06 y PS-07 - Proyecto Integrador Fase 3.
+Pruebas de seguridad PS-05 y PS-06 - Proyecto Integrador Fase 3.
 
 """
 import argparse
@@ -7,6 +7,8 @@ import json
 import time
 import urllib.error
 import urllib.request
+from collections import Counter
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 
 
@@ -40,38 +42,51 @@ def ps06(base):
     return ok
 
 
-def ps07(base, usuario, intentos):
-    print(f"\n=== PS-07: {intentos} intentos de login fallidos seguidos para '{usuario}' ===")
-    primer_429 = None
-    for i in range(1, intentos + 1):
+def ps05(base, usuario, total, hilos):
+    print(f"\n=== PS-05: rafaga de {total} solicitudes simultaneas de login para '{usuario}' ===")
+    def intento(i):
         codigo, _ = peticion(base, "POST", "/login",
                              {"username": usuario, "password": f"clave_incorrecta_{i}"})
-        print(f"Intento {i:02d} -> HTTP {codigo}")
-        if codigo == 429 and primer_429 is None:
-            primer_429 = i
-    if primer_429 is None:
-        print("Resultado PS-07: NO CUMPLE (no aparecio HTTP 429; revisar el limite en FastAPI).")
-        return False
-    print(f"El limite se activo en el intento {primer_429} (esperado: intento 6, limite de 5/minuto).")
-    return True
+        return codigo
+
+    inicio = time.time()
+    with ThreadPoolExecutor(max_workers=hilos) as ex:
+        codigos = list(ex.map(intento, range(1, total + 1)))
+    duracion = time.time() - inicio
+
+    conteo = Counter(codigos)
+    print(f"Solicitudes enviadas: {total} en {duracion:.2f} s ({hilos} hilos en paralelo)")
+    for codigo, n in sorted(conteo.items()):
+        nombre = {401: "Unauthorized (procesadas)", 429: "Too Many Requests (bloqueadas)"}.get(codigo, "")
+        print(f"  HTTP {codigo} {nombre}: {n}")
+    bloqueadas = conteo.get(429, 0)
+    print(f"Esperado: como maximo 5 procesadas (limite 5/minuto) y el resto bloqueadas con 429.")
+    return bloqueadas > 0 and conteo.get(401, 0) <= 5
 
 
-def recuperacion(base, usuario):
-    print("\n=== PS-07 (continuacion): recuperacion del servicio tras la ventana del limite ===")
+def ps05_disponibilidad(base):
+    print("\n=== PS-05: disponibilidad del servidor durante el bloqueo ===")
+    codigo, _ = peticion(base, "GET", "/docs")
+    print(f"GET /docs mientras la IP esta bloqueada en /login -> HTTP {codigo}")
+    print("Esperado: HTTP 200 (el servidor sigue en linea; solo se limita /login).")
+    return codigo == 200
+
+
+def ps05_recuperacion(base, usuario):
+    print("\n=== PS-05: recuperacion tras la ventana del limite ===")
     codigo, cuerpo = peticion(base, "POST", "/login",
                               {"username": usuario, "password": "clave_incorrecta_final"})
     print(f"Nuevo intento -> HTTP {codigo} | {cuerpo}")
-    ok = codigo == 401
     print("Esperado: HTTP 401 (la solicitud vuelve a ser procesada; ya no hay bloqueo 429).")
-    print("Resultado PS-07:", veredicto(ok))
-    return ok
+    return codigo == 401
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Pruebas PS-06 y PS-07")
+    parser = argparse.ArgumentParser(description="Pruebas PS-05 y PS-06")
     parser.add_argument("--url", default="http://127.0.0.1:8000", help="direccion del microservicio FastAPI")
     parser.add_argument("--usuario", default="j.cardenas", help="usuario registrado para las pruebas")
-    parser.add_argument("--intentos", type=int, default=8, help="intentos de login para PS-07")
+    parser.add_argument("--total", type=int, default=200, help="solicitudes simultaneas para PS-05")
+    parser.add_argument("--hilos", type=int, default=50, help="hilos en paralelo para la rafaga")
     parser.add_argument("--espera", type=int, default=65, help="segundos de espera antes de la recuperacion")
     args = parser.parse_args()
 
@@ -80,18 +95,20 @@ def main():
 
     try:
         r6 = ps06(args.url)
-        limite = ps07(args.url, args.usuario, args.intentos)
+        bloqueo = ps05(args.url, args.usuario, args.total, args.hilos)
+        disponible = ps05_disponibilidad(args.url)
         print(f"\nEsperando {args.espera} segundos para que se libere el limite...")
         time.sleep(args.espera)
-        r7 = limite and recuperacion(args.url, args.usuario)
+        recupera = ps05_recuperacion(args.url, args.usuario)
     except urllib.error.URLError as e:
         print("\nNo se pudo conectar con el microservicio:", e.reason)
         print("Verifica que FastAPI este encendido en", args.url)
         return
 
+    r5 = bloqueo and disponible and recupera
     print("\n=== Resumen ===")
-    print("PS-06 (verificacion obligatoria del token):", veredicto(r6))
-    print("PS-07 (limitacion de tasa y recuperacion): ", veredicto(r7))
+    print("PS-05 (rafaga de 200 solicitudes: bloqueo, disponibilidad y recuperacion):", veredicto(r5))
+    print("PS-06 (verificacion obligatoria del token): ", veredicto(r6))
 
 
 if __name__ == "__main__":
