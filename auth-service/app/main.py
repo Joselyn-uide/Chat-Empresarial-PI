@@ -92,7 +92,7 @@ def registrar_usuario(datos: UsuarioRegistro):
     usuarios[username] = {
         "username": username,
         "password_hash": password_hash,
-        "rol": datos.rol
+        "rol": rol
     }
     guardar_usuarios(usuarios)
 
